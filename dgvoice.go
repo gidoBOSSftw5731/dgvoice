@@ -182,8 +182,8 @@ func PlayAudioFile(v *discordgo.VoiceConnection, filename string, stop <-chan bo
 	//when stop is sent, kill ffmpeg
 	go func() {
 		<-stop
+		endtime <- (time.Since(starttime).Seconds() + skipahead)
 		err = run.Process.Kill()
-		endtime <- time.Since(starttime).Seconds() + skipahead
 	}()
 
 	// Send "speaking" packet over the voice websocket
